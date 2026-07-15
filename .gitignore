@@ -1,0 +1,16 @@
+.env
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.venv/
+venv/
+node_modules/
+dist/
+backend/storage/
+backend/mlruns/
+storage/
+*.db
+.DS_Store
+data/raw_pdfs/*.pdf
+!data/raw_pdfs/.gitkeep

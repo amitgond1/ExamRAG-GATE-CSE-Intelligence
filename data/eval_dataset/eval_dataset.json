@@ -1,0 +1,128 @@
+[
+  {
+    "question": "What are the four necessary conditions for a deadlock?",
+    "ground_truth": "The Coffman conditions are mutual exclusion, hold and wait, no preemption, and circular wait; all four must hold simultaneously for deadlock to be possible.",
+    "answer": "Deadlock requires mutual exclusion, hold and wait, no preemption, and circular wait. All four conditions must be present simultaneously.",
+    "contexts": ["A deadlock can arise only if four Coffman conditions hold simultaneously: mutual exclusion, hold and wait, no preemption, and circular wait."],
+    "expected_topic": "OS — Deadlocks"
+  },
+  {
+    "question": "How does Belady's anomaly relate to FIFO page replacement?",
+    "ground_truth": "Belady's anomaly is the counterintuitive increase in page faults that can occur under FIFO when the number of available page frames increases.",
+    "answer": "Under FIFO, adding page frames can sometimes increase rather than decrease page faults; this is Belady's anomaly.",
+    "contexts": ["FIFO is not a stack algorithm and may show Belady's anomaly: for some reference strings, allocating more frames produces more page faults."],
+    "expected_topic": "OS — Virtual Memory"
+  },
+  {
+    "question": "What is the difference between a process and a thread?",
+    "ground_truth": "A process has its own address space and resources, while threads within a process share its address space and resources but have separate program counters, registers, and stacks.",
+    "answer": "Processes own separate address spaces. Threads in one process share code, data, and OS resources, while each thread keeps its own registers, program counter, and stack.",
+    "contexts": ["A process is a resource-allocation unit with an address space. Threads are CPU execution units: peer threads share process code, data and files, but each has a program counter, register set and stack."],
+    "expected_topic": "OS — Processes and Threads"
+  },
+  {
+    "question": "When is a relation in Boyce-Codd Normal Form?",
+    "ground_truth": "A relation is in BCNF if, for every non-trivial functional dependency X determines Y, X is a superkey.",
+    "answer": "A relation is in BCNF when the determinant of every non-trivial functional dependency is a superkey.",
+    "contexts": ["BCNF definition: relation R is in BCNF if for every non-trivial functional dependency X → Y that holds in R, X is a superkey of R."],
+    "expected_topic": "DBMS — Normalization"
+  },
+  {
+    "question": "What does conflict serializability guarantee?",
+    "ground_truth": "It guarantees that a schedule is conflict-equivalent to some serial schedule; equivalently, its precedence graph is acyclic.",
+    "answer": "A conflict-serializable schedule is conflict-equivalent to a serial ordering. This holds exactly when its precedence graph is acyclic.",
+    "contexts": ["A schedule is conflict serializable iff it is conflict equivalent to a serial schedule. The precedence-graph test says that the schedule is conflict serializable iff its graph is acyclic."],
+    "expected_topic": "DBMS — Transactions"
+  },
+  {
+    "question": "Why is a B+ tree well suited for database indexes?",
+    "ground_truth": "Its high fan-out gives small height and few disk I/Os, while linked leaves support efficient ordered and range access.",
+    "answer": "B+ trees have high fan-out, so searches need few disk reads. All records are at linked leaves, making sequential and range queries efficient.",
+    "contexts": ["B+ trees are balanced multiway search trees with large fan-out, reducing height and block accesses. Data entries occur at linked leaf nodes, which support ordered scans and range searches."],
+    "expected_topic": "DBMS — Indexing"
+  },
+  {
+    "question": "What is the worst-case time complexity of merge sort?",
+    "ground_truth": "Merge sort runs in Theta(n log n) time in the worst case.",
+    "answer": "Merge sort has worst-case time complexity Θ(n log n), because it has log n merge levels and Θ(n) work per level.",
+    "contexts": ["Merge sort obeys T(n)=2T(n/2)+Θ(n). There are Θ(log n) levels and merging costs Θ(n) per level, hence T(n)=Θ(n log n) in all cases."],
+    "expected_topic": "Algo — Sorting"
+  },
+  {
+    "question": "When does Dijkstra's shortest-path algorithm fail?",
+    "ground_truth": "Dijkstra's algorithm is not correct for graphs containing negative-weight edges reachable from the source.",
+    "answer": "Dijkstra's greedy finalization is invalid when a reachable edge has negative weight, because a finalized distance may later be reduced.",
+    "contexts": ["Dijkstra assumes all edge weights are non-negative. With a negative edge, a vertex already extracted as minimum can later receive a shorter path, invalidating the greedy proof."],
+    "expected_topic": "Algo — Graph Algorithms"
+  },
+  {
+    "question": "What is the time complexity of BFS using adjacency lists?",
+    "ground_truth": "Breadth-first search takes Theta(V + E) time with adjacency lists.",
+    "answer": "BFS runs in Θ(V + E): it discovers each vertex once and examines each adjacency-list edge a constant number of times.",
+    "contexts": ["With adjacency-list representation, BFS enqueues every vertex at most once and scans every adjacency list once. Its running time is Θ(V+E)."],
+    "expected_topic": "DS — Graphs"
+  },
+  {
+    "question": "What property defines a max-heap?",
+    "ground_truth": "A max-heap is a complete binary tree in which every node's key is at least as large as the keys of its children.",
+    "answer": "A max-heap is complete, and every parent key is greater than or equal to each child key; therefore the maximum is at the root.",
+    "contexts": ["A binary max-heap has the shape of a complete binary tree and satisfies the max-heap order: key(parent) ≥ key(child) for every edge. The root stores a maximum key."],
+    "expected_topic": "DS — Heaps"
+  },
+  {
+    "question": "How many rotations can AVL insertion require?",
+    "ground_truth": "Restoring balance after one AVL insertion requires at most one single rotation or one double rotation at the first unbalanced ancestor.",
+    "answer": "AVL insertion needs at most one rebalancing operation at the first unbalanced ancestor: either one single rotation or one double rotation.",
+    "contexts": ["After inserting into an AVL tree, repairing the lowest unbalanced ancestor with a single or double rotation restores the subtree height. No further ancestor rotation is required."],
+    "expected_topic": "DS — Balanced Trees"
+  },
+  {
+    "question": "What is the purpose of TCP's three-way handshake?",
+    "ground_truth": "It establishes a connection by synchronizing both directions' initial sequence numbers and confirming that each endpoint can send and receive.",
+    "answer": "The SYN, SYN-ACK, ACK exchange establishes the connection and lets both endpoints synchronize and acknowledge initial sequence numbers.",
+    "contexts": ["TCP connection establishment uses SYN, SYN+ACK, and ACK. The exchange synchronizes the initial sequence number in each direction and confirms bidirectional reachability."],
+    "expected_topic": "CN — Transport Layer"
+  },
+  {
+    "question": "How does a router choose among matching IP prefixes?",
+    "ground_truth": "A router uses longest-prefix matching, selecting the matching forwarding-table prefix with the greatest number of leading bits.",
+    "answer": "The router applies longest-prefix matching and selects the matching route with the most specific, longest network prefix.",
+    "contexts": ["IP forwarding uses longest-prefix match: among all table entries whose prefixes match the destination address, select the entry having the longest prefix."],
+    "expected_topic": "CN — Network Layer"
+  },
+  {
+    "question": "What is the maximum usable host count in an IPv4 /24 subnet?",
+    "ground_truth": "A /24 has 8 host bits and 256 total addresses; traditionally 254 are usable after excluding the network and broadcast addresses.",
+    "answer": "A /24 leaves 8 host bits, giving 2^8 = 256 addresses. Excluding network and broadcast addresses leaves 254 usable host addresses.",
+    "contexts": ["An IPv4 prefix /p leaves 32-p host bits. For a conventional subnet with h host bits, usable unicast host addresses equal 2^h-2 because all-zero and all-one host fields identify network and broadcast."],
+    "expected_topic": "CN — IP Addressing"
+  },
+  {
+    "question": "What language class does a pushdown automaton recognize?",
+    "ground_truth": "A nondeterministic pushdown automaton recognizes exactly the context-free languages.",
+    "answer": "Nondeterministic pushdown automata recognize exactly the context-free languages.",
+    "contexts": ["The class of languages accepted by nondeterministic pushdown automata is precisely the class of context-free languages generated by context-free grammars."],
+    "expected_topic": "Theory — Automata"
+  },
+  {
+    "question": "What does it mean for a problem to be NP-complete?",
+    "ground_truth": "A decision problem is NP-complete if it belongs to NP and every problem in NP is polynomial-time reducible to it.",
+    "answer": "A decision problem is NP-complete when it is in NP and is NP-hard, meaning every NP problem can be reduced to it in polynomial time.",
+    "contexts": ["A language L is NP-complete when (1) L belongs to NP and (2) for every language L' in NP, L' is polynomial-time many-one reducible to L."],
+    "expected_topic": "Theory — Complexity"
+  },
+  {
+    "question": "What is the range of a signed 8-bit two's-complement integer?",
+    "ground_truth": "The range is -128 through 127, or -2^7 through 2^7-1.",
+    "answer": "An 8-bit two's-complement value ranges from -2^7 to 2^7-1, which is -128 through 127.",
+    "contexts": ["An n-bit two's-complement signed integer has range -2^(n-1) through 2^(n-1)-1. Setting n=8 yields -128 through 127."],
+    "expected_topic": "COA — Data Representation"
+  },
+  {
+    "question": "What is the ideal speedup of a five-stage pipeline?",
+    "ground_truth": "For a long instruction stream with balanced stages and no hazards, the speedup approaches five, although fill and drain overhead make finite-stream speedup lower.",
+    "answer": "With balanced stages and no stalls, a five-stage pipeline approaches 5× speedup for a long instruction sequence; fill and drain overhead reduce the finite case.",
+    "contexts": ["An ideal k-stage pipeline completes one instruction per stage time after filling, versus k stage times without pipelining. As instruction count grows, speedup approaches k; startup and drain overhead matter for finite streams."],
+    "expected_topic": "COA — Pipelining"
+  }
+]
