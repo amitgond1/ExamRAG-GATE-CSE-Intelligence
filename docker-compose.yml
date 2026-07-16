@@ -3,7 +3,7 @@ services:
     build: ./backend
     environment:
       GROQ_API_KEY: ${GROQ_API_KEY:?Set GROQ_API_KEY in .env}
-      GROQ_MODEL: ${GROQ_MODEL:-llama-3.1-70b-versatile}
+      GROQ_MODEL: ${GROQ_MODEL:-llama-3.3-70b-versatile}
       CHROMA_PATH: /app/storage/chroma
       UPLOAD_PATH: /app/storage/uploads
       MLFLOW_TRACKING_URI: http://mlflow:5000

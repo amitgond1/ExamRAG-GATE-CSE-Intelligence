@@ -16,6 +16,22 @@ The project is deliberately evaluation-first: three retrieval strategies use the
   <img src="docs/screenshots/examrag-chat-mobile.png" alt="ExamRAG responsive mobile interface" width="360" />
 </p>
 
+## Grounding behavior demo
+
+For this demonstration, the indexed knowledge base contains the **GATE 2025 CSE question paper** and an **Operating Systems study PDF**. ExamRAG is intentionally constrained to these uploaded documents instead of filling evidence gaps with unsupported model knowledge.
+
+### Safe refusal when the indexed evidence is insufficient
+
+The first query asks for the most frequently asked Computer Networks questions for **GATE 2026**. The indexed corpus contains no GATE 2026 paper or evidence that can establish future question frequency, so ExamRAG correctly responds that it does not have enough information. This refusal is expected behavior and demonstrates hallucination control.
+
+![ExamRAG refuses a GATE 2026 query that is not supported by the indexed GATE 2025 and OS documents](docs/screenshots/examrag-grounded-refusal.png)
+
+### Grounded answer when the evidence exists
+
+The next query asks for important Operating Systems topics from **GATE 2025**. This request is supported by the indexed GATE 2025 paper and OS study material, so ExamRAG produces an answer grounded in retrieved chunks and includes inline citations plus an expandable source list.
+
+![ExamRAG answers a GATE 2025 Operating Systems query using retrieved context and citations](docs/screenshots/examrag-grounded-answer.png)
+
 ## What is implemented
 
 - PDF ingestion with PyMuPDF, 500-token chunks, 50-token overlap, SHA-256 document IDs, page provenance, and inferred GATE subject/topic/difficulty metadata.
@@ -76,7 +92,7 @@ Open:
 - FastAPI docs: <http://localhost:8001/docs>
 - MLflow UI: <http://localhost:5001>
 
-The requested default model is `llama-3.1-70b-versatile`. Groq model availability can vary by account and over time; set `GROQ_MODEL` in `.env` to a currently available compatible model without changing code.
+The default model is Groq's production `llama-3.3-70b-versatile`. Model availability can vary by account and over time; override `GROQ_MODEL` in `.env` without changing code.
 
 ## Local development
 

@@ -28,7 +28,10 @@ class GroqGenerator:
 
     def _client(self) -> AsyncGroq:
         if not self.api_key:
-            raise GenerationError("GROQ_API_KEY is not configured")
+            raise GenerationError(
+                "GROQ_API_KEY is not configured. Copy .env.example to .env, "
+                "add your Groq API key, and restart the backend."
+            )
         return AsyncGroq(api_key=self.api_key, timeout=45.0, max_retries=2)
 
     async def generate(self, question: str, sources: list[SourceChunk]) -> str:
@@ -74,4 +77,3 @@ class GroqGenerator:
                     yield delta
         except (APIConnectionError, APIStatusError, APITimeoutError) as exc:
             raise GenerationError(f"Groq streaming failed: {exc}") from exc
-

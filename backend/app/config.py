@@ -18,7 +18,7 @@ class Settings(BaseSettings):
 
     groq_api_key: str | None = Field(default=None, validation_alias="GROQ_API_KEY")
     groq_model: str = Field(
-        default="llama-3.1-70b-versatile", validation_alias="GROQ_MODEL"
+        default="llama-3.3-70b-versatile", validation_alias="GROQ_MODEL"
     )
     embedding_model: str = "BAAI/bge-small-en-v1.5"
     reranker_model: str = "cross-encoder/ms-marco-MiniLM-L-6-v2"
