@@ -1,16 +1,16 @@
 import { AlertCircle, CheckCircle2, LoaderCircle, Server, Upload } from 'lucide-react'
-import { DragEvent, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { checkBackend, uploadPdf } from '../api'
 
 export default function FileUpload() {
-  const input = useRef<HTMLInputElement>(null)
+  const input = useRef(null)
   const [status, setStatus] = useState('')
-  const [state, setState] = useState<'idle' | 'busy' | 'success' | 'error'>('idle')
-  const [connected, setConnected] = useState<boolean | null>(null)
+  const [state, setState] = useState('idle')
+  const [connected, setConnected] = useState(null)
 
   useEffect(() => { checkBackend().then(setConnected) }, [])
 
-  async function upload(file?: File) {
+  async function upload(file) {
     if (!file) return
     if (file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) {
       setState('error'); setStatus('Please select a PDF file.'); return
@@ -32,7 +32,7 @@ export default function FileUpload() {
     }
   }
 
-  function drop(event: DragEvent<HTMLButtonElement>) {
+  function drop(event) {
     event.preventDefault(); upload(event.dataTransfer.files[0])
   }
 

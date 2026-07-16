@@ -1,18 +1,15 @@
 import { ArrowUp, Bot, Database, UserRound } from 'lucide-react'
-import { FormEvent, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { streamChat } from '../api'
 import FileUpload from '../components/FileUpload'
 import SourceList from '../components/SourceList'
-import type { SourceChunk, Strategy } from '../types'
-
-interface Message { id: string; role: 'user' | 'assistant'; text: string; sources?: SourceChunk[]; latency?: number; error?: boolean }
 const suggestions = ['Explain deadlock prevention vs avoidance', 'What makes a schedule conflict serializable?', 'Derive the time complexity of merge sort']
 
 export default function Chat() {
-  const [messages, setMessages] = useState<Message[]>([]); const [question, setQuestion] = useState(''); const [strategy, setStrategy] = useState<Strategy>('hybrid_rerank'); const [loading, setLoading] = useState(false); const controller = useRef<AbortController | null>(null)
-  async function submit(event?: FormEvent, suggested?: string) {
+  const [messages, setMessages] = useState([]); const [question, setQuestion] = useState(''); const [strategy, setStrategy] = useState('hybrid_rerank'); const [loading, setLoading] = useState(false); const controller = useRef(null)
+  async function submit(event, suggested) {
     event?.preventDefault(); const prompt = (suggested ?? question).trim(); if (!prompt || loading) return
-    const user: Message = { id: crypto.randomUUID(), role: 'user', text: prompt }; const assistantId = crypto.randomUUID()
+    const user = { id: crypto.randomUUID(), role: 'user', text: prompt }; const assistantId = crypto.randomUUID()
     setMessages((old) => [...old, user, { id: assistantId, role: 'assistant', text: '' }]); setQuestion(''); setLoading(true); controller.current = new AbortController()
     try { await streamChat(prompt, strategy, { onSources: (sources) => setMessages((old) => old.map((m) => m.id === assistantId ? { ...m, sources } : m)), onToken: (token) => setMessages((old) => old.map((m) => m.id === assistantId ? { ...m, text: m.text + token } : m)), onDone: (latency) => setMessages((old) => old.map((m) => m.id === assistantId ? { ...m, latency } : m)) }, controller.current.signal) }
     catch (error) { setMessages((old) => old.map((m) => m.id === assistantId ? { ...m, text: error instanceof Error ? error.message : 'Unable to answer', error: true } : m)) }
@@ -21,7 +18,7 @@ export default function Chat() {
   return <div className="grid w-full min-w-0 gap-3 sm:gap-6 lg:grid-cols-[260px_minmax(0,1fr)]">
     <aside className="min-w-0 space-y-3 rounded-2xl border border-slate-200 bg-white p-3 shadow-card sm:p-4 lg:sticky lg:top-24 lg:self-start lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none">
       <div className="flex items-end justify-between gap-3 lg:block"><div><p className="display text-lg sm:text-xl">Retrieval setup</p><p className="hidden text-sm text-slate-500 sm:block">Choose how evidence is found.</p></div><Database size={18} className="mb-1 text-brand-600 lg:hidden" /></div>
-      <label className="block text-xs font-bold uppercase tracking-wider text-slate-500">Strategy<select value={strategy} onChange={(e) => setStrategy(e.target.value as Strategy)} className="mt-1.5 w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-brand-500 sm:mt-2 sm:py-3"><option value="dense">A · Dense top-5</option><option value="hybrid">B · Hybrid top-10</option><option value="hybrid_rerank">C · Hybrid + rerank</option></select></label>
+      <label className="block text-xs font-bold uppercase tracking-wider text-slate-500">Strategy<select value={strategy} onChange={(event) => setStrategy(event.target.value)} className="mt-1.5 w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-brand-500 sm:mt-2 sm:py-3"><option value="dense">A · Dense top-5</option><option value="hybrid">B · Hybrid top-10</option><option value="hybrid_rerank">C · Hybrid + rerank</option></select></label>
       <FileUpload />
       <div className="hidden rounded-xl bg-brand-50 p-3 text-xs leading-5 text-brand-700 lg:block"><Database size={16} className="mb-1" />Answers are constrained to indexed PDFs and include chunk citations.</div>
     </aside>

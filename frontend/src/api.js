@@ -1,8 +1,6 @@
-import type { EvaluationItem, EvaluationRun, SourceChunk, Strategy } from './types'
-
 const API = import.meta.env.VITE_API_URL ?? '/api'
 
-export async function checkBackend(): Promise<boolean> {
+export async function checkBackend() {
   try {
     const response = await fetch(`${API}/health`, { signal: AbortSignal.timeout(4000) })
     if (!response.ok) return false
@@ -13,17 +11,17 @@ export async function checkBackend(): Promise<boolean> {
   }
 }
 
-async function errorFrom(response: Response): Promise<Error> {
+async function errorFrom(response) {
   try { const body = await response.json(); return new Error(body.detail ?? 'Request failed') }
   catch { return new Error(`Request failed (${response.status})`) }
 }
 
 export async function streamChat(
-  question: string,
-  strategy: Strategy,
-  handlers: { onSources: (sources: SourceChunk[]) => void; onToken: (token: string) => void; onDone: (latency: number) => void },
-  signal?: AbortSignal,
-): Promise<void> {
+  question,
+  strategy,
+  handlers,
+  signal,
+) {
   const response = await fetch(`${API}/chat`, {
     method: 'POST', headers: { 'Content-Type': 'application/json' }, signal,
     body: JSON.stringify({ question, strategy, stream: true }),
@@ -52,13 +50,13 @@ export async function streamChat(
   }
 }
 
-export async function fetchHistory(): Promise<EvaluationRun[]> {
+export async function fetchHistory() {
   const response = await fetch(`${API}/eval-history`)
   if (!response.ok) throw await errorFrom(response)
   return response.json()
 }
 
-export async function runABTest(items: EvaluationItem[]) {
+export async function runABTest(items) {
   const response = await fetch(`${API}/ab-test`, {
     method: 'POST', headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ items, run_name: `dashboard-${new Date().toISOString()}` }),
@@ -67,7 +65,7 @@ export async function runABTest(items: EvaluationItem[]) {
   return response.json()
 }
 
-export async function uploadPdf(file: File): Promise<{ chunks_created: number; subjects_detected: string[] }> {
+export async function uploadPdf(file) {
   const body = new FormData(); body.append('file', file)
   const response = await fetch(`${API}/ingest`, { method: 'POST', body })
   if (!response.ok) throw await errorFrom(response)

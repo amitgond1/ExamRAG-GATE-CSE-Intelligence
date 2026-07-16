@@ -3,12 +3,10 @@ import { useEffect, useMemo, useState } from 'react'
 import { Bar, BarChart, CartesianGrid, Legend, PolarAngleAxis, PolarGrid, Radar, RadarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { fetchHistory } from '../api'
 import MetricCard from '../components/MetricCard'
-import type { EvaluationRun } from '../types'
-
-const labels: Record<string, string> = { faithfulness: 'Faithfulness', answer_relevancy: 'Answer relevancy', context_precision: 'Context precision', context_recall: 'Context recall' }
+const labels = { faithfulness: 'Faithfulness', answer_relevancy: 'Answer relevancy', context_precision: 'Context precision', context_recall: 'Context recall' }
 
 export default function Dashboard() {
-  const [runs, setRuns] = useState<EvaluationRun[]>([]); const [strategy, setStrategy] = useState('all'); const [error, setError] = useState(''); const [loading, setLoading] = useState(true)
+  const [runs, setRuns] = useState([]); const [strategy, setStrategy] = useState('all'); const [error, setError] = useState(''); const [loading, setLoading] = useState(true)
   async function load() { setLoading(true); setError(''); try { setRuns(await fetchHistory()) } catch (e) { setError(e instanceof Error ? e.message : 'Could not load history') } finally { setLoading(false) } }
   useEffect(() => { load() }, [])
   const filtered = useMemo(() => runs.filter((run) => strategy === 'all' || run.strategy === strategy), [runs, strategy]); const latest = filtered[0]

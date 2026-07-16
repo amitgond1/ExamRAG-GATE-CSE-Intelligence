@@ -1,6 +1,6 @@
 # ExamRAG
 
-ExamRAG is a production-oriented retrieval-augmented generation system for GATE Computer Science study material. It combines local dense embeddings, BM25, reciprocal-rank fusion, cross-encoder reranking, grounded Groq generation, RAGAS evaluation, sentence-level NLI checks, and MLflow experiment tracking behind a FastAPI + React application.
+ExamRAG is a production-oriented retrieval-augmented generation system for GATE Computer Science study material. It combines local dense embeddings, BM25, reciprocal-rank fusion, cross-encoder reranking, grounded Groq generation, RAGAS evaluation, sentence-level NLI checks, and MLflow experiment tracking behind a FastAPI + React application. The frontend is implemented in plain **JavaScript/JSX** with Vite, not TypeScript.
 
 The project is deliberately evaluation-first: three retrieval strategies use the same generation layer so that changes in answer quality can be attributed to retrieval.
 
